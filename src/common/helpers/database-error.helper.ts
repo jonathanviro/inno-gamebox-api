@@ -1,6 +1,10 @@
-import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 
 export function handleDatabaseErrors(error: any): never {
+  if (error instanceof NotFoundException) {
+    throw error;
+  }
+
   console.log('El error aqui', error);
 
   // Error de clave duplicada (unique constraint violation)

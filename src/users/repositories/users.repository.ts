@@ -14,8 +14,7 @@ export class UsersRepository {
             telephone: data.telephone,
             firstName: data.firstName,
             lastName: data.lastName,
-            password: data.password,
-            isActive: true,
+            password: data.password
           };
 
         const user = await this.prisma.users.create({ data: userData });

@@ -14,16 +14,16 @@ datasource db {
 }
 
 model Users {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String      @id @default(uuid())
+  email     String      @unique
   telephone String?
   firstName String
   lastName  String
   password  String
-  isActive  Boolean  @default(true)
+  isActive  Boolean     @default(true)
   companies Companies[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model Companies {
@@ -38,54 +38,68 @@ model Companies {
 }
 
 model Events {
-  id            String    @id @default(uuid())
-  name          String
-  startDate     DateTime
-  endDate       DateTime
-  companyId     String
-  company       Companies @relation(fields: [companyId], references: [id])
-  isActive      Boolean   @default(true)
-  products      Products[]
-  participants  Participants[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String         @id @default(uuid())
+  name         String
+  startDate    DateTime
+  endDate      DateTime
+  companyId    String
+  company      Companies      @relation(fields: [companyId], references: [id])
+  isActive     Boolean        @default(true)
+  devices      Devices[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  participants Participants[]
+}
+
+model Devices {
+  id           String         @id @default(uuid())
+  name         String
+  eventId      String
+  event        Events         @relation(fields: [eventId], references: [id])
+  isActive     Boolean        @default(true)
+  products     Products[]
+  participants Participants[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model Products {
-  id        String   @id @default(uuid())
-  name      String
-  stock     Int
-  imageUrl  String?
-  eventId   String
-  event     Events   @relation(fields: [eventId], references: [id])
-  isActive  Boolean  @default(true)
+  id           String         @id @default(uuid())
+  name         String
+  stock        Int
+  imageUrl     String?
+  deviceId     String
+  device       Devices        @relation(fields: [deviceId], references: [id])
+  isActive     Boolean        @default(true)
   consumptions Consumptions[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model Participants {
-  id         String   @id @default(uuid())
-  invoice    String
-  firstName  String
-  lastName   String
-  email      String?
-  eventId    String
-  event      Events   @relation(fields: [eventId], references: [id])
-  isActive   Boolean  @default(true)
+  id           String         @id @default(uuid())
+  invoice      String
+  firstName    String
+  lastName     String
+  email        String?
+  eventId      String
+  event        Events         @relation(fields: [eventId], references: [id])
+  isActive     Boolean        @default(true)
   consumptions Consumptions[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  deviceId     String?
+  device       Devices?       @relation(fields: [deviceId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model Consumptions {
-  id            String   @id @default(uuid())
+  id            String       @id @default(uuid())
   participantId String
   participant   Participants @relation(fields: [participantId], references: [id])
   productId     String
-  product       Products  @relation(fields: [productId], references: [id])
-  amount        Int      @default(1)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  product       Products     @relation(fields: [productId], references: [id])
+  amount        Int          @default(1)
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }

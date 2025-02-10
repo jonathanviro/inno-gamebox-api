@@ -13,7 +13,6 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     try {
-
       const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
       createUserDto.password = hashedPassword;
 
@@ -39,17 +38,12 @@ export class UsersService {
       const user = await this.usersRepository.findById(id);
 
       if (!user) {
-        throw new NotFoundException(`User not found ID: ${id}`);  // Lanzamos el NotFoundException aquí
+        throw new NotFoundException(`User with ID: ${id} not found`);
       }
 
       return user;
     } catch (error) {
-      log(`Error searching for user with id "${id}" : ${error.message}`, 'error');
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
+      log(`Error searching user with ID ${id} : ${error.message}`, 'error');
       handleDatabaseErrors(error);
     }
   }
@@ -59,18 +53,22 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     try {
+      await this.findOne(id);
+
       return await this.usersRepository.update(id, updateUserDto);
     } catch (error) {
-      log(`Error updating user with id "${id}" : ${error.message}`, 'error');
+      log(`Error updating user with ID "${id}" : ${error.message}`, 'error');
       handleDatabaseErrors(error);
     }
   }
 
   async remove(id: string) {
     try {
+      await this.findOne(id);
+
       return await this.usersRepository.remove(id);
     } catch (error) {
-      log(`Error removing user with id "${id}" : ${error.message}`, 'error');
+      log(`Error removing user with ID "${id}" : ${error.message}`, 'error');
       handleDatabaseErrors(error);
     }
   }

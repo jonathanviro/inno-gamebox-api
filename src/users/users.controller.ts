@@ -1,33 +1,33 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto, UserResponseDto } from './dto';
+import { CreateUserDto, UpdateUserDto, ResponseUserDto } from './dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<ResponseUserDto> {
     const user = await this.usersService.create(createUserDto);
-    return new UserResponseDto(user);
+    return new ResponseUserDto(user);
   }
 
   @Get()
-  async findAll(): Promise<UserResponseDto[]> {
+  async findAll(): Promise<ResponseUserDto[]> {
     const users = await this.usersService.findAll();
-    return users.map(user => new UserResponseDto(user));
+    return users.map(user => new ResponseUserDto(user));
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<UserResponseDto> {
+  async findOne(@Param('id') id: string): Promise<ResponseUserDto> {
     const user = await this.usersService.findOne(id);
-    return new UserResponseDto(user);
+    return new ResponseUserDto(user);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserResponseDto> {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<ResponseUserDto> {
     const user = await this.usersService.update(id, updateUserDto);
-    return new UserResponseDto(user);
+    return new ResponseUserDto(user);
   }
 
   @Delete(':id')
