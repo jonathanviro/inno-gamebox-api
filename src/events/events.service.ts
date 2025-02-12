@@ -44,7 +44,6 @@ export class EventsService {
   async update(id: string, updateEventDto: UpdateEventDto) {
     try {
       await this.findOne(id);
-
       return await this.eventRepository.update(id, updateEventDto);
     } catch (error) {
       log(`Error updating event with ID ${id}: ${error.message}`, 'error');
@@ -55,10 +54,9 @@ export class EventsService {
   async remove(id: string) {
     try {
       await this.findOne(id);
-      
       return await this.eventRepository.remove(id);
     } catch (error) {
-      log(`Error creating event with ID ${id}: ${error.message}`, 'error');
+      log(`Error removing event with ID ${id}: ${error.message}`, 'error');
       handleDatabaseErrors(error);
     }
   }

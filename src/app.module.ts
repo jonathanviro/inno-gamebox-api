@@ -4,6 +4,9 @@ import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { CompaniesModule } from './companies/companies.module';
 import { EventsModule } from './events/events.module';
+import { DevicesModule } from './devices/devices.module';
+import { ProductsModule } from './products/products.module';
+import { ConsumptionsModule } from './consumptions/consumptions.module';
 
 @Module({
   imports: [
@@ -12,6 +15,9 @@ import { EventsModule } from './events/events.module';
     CommonModule,
     CompaniesModule,
     EventsModule,
+    DevicesModule,
+    ProductsModule,
+    ConsumptionsModule,
   ],
   controllers: [],
   providers: [],

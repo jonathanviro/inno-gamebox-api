@@ -38,34 +38,36 @@ model Companies {
 }
 
 model Events {
-  id           String         @id @default(uuid())
-  name         String
-  startDate    DateTime
-  endDate      DateTime
-  companyId    String
-  company      Companies      @relation(fields: [companyId], references: [id])
-  isActive     Boolean        @default(true)
-  devices      Devices[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  participants Participants[]
+  id        String    @id @default(uuid())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  companyId String
+  company   Companies @relation(fields: [companyId], references: [id])
+  isActive  Boolean   @default(true)
+  devices   Devices[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Devices {
-  id           String         @id @default(uuid())
-  name         String
-  eventId      String
-  event        Events         @relation(fields: [eventId], references: [id])
-  isActive     Boolean        @default(true)
-  products     Products[]
-  participants Participants[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id         String     @id @default(uuid())
+  name       String
+  site       String
+  macAddress String
+  deviceType String
+  eventId    String
+  event      Events     @relation(fields: [eventId], references: [id])
+  isActive   Boolean    @default(true)
+  products   Products[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 model Products {
   id           String         @id @default(uuid())
   name         String
+  sku          String
   stock        Int
   imageUrl     String?
   deviceId     String
@@ -76,30 +78,13 @@ model Products {
   updatedAt    DateTime       @updatedAt
 }
 
-model Participants {
-  id           String         @id @default(uuid())
-  invoice      String
-  firstName    String
-  lastName     String
-  email        String?
-  eventId      String
-  event        Events         @relation(fields: [eventId], references: [id])
-  isActive     Boolean        @default(true)
-  consumptions Consumptions[]
-  deviceId     String?
-  device       Devices?       @relation(fields: [deviceId], references: [id])
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-}
-
 model Consumptions {
-  id            String       @id @default(uuid())
-  participantId String
-  participant   Participants @relation(fields: [participantId], references: [id])
-  productId     String
-  product       Products     @relation(fields: [productId], references: [id])
-  amount        Int          @default(1)
-  isActive      Boolean      @default(true)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id        String   @id @default(uuid())
+  invoice   String
+  productId String
+  product   Products @relation(fields: [productId], references: [id])
+  amount    Int      @default(1)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
